@@ -9,3 +9,4 @@ We start with the "twistor inspired" basis of C_A's. In order to preserve the st
 
 Since that operator labels the C_A's, the b_i's entries have form z[l[A]], which I think as "labeled A". The last element of each sublist tells you which is the C_A we are talking about. 
 
+Another note: when working with the notebook, if you want to define some functions or generators make sure the first letter is lowercase, so Mathematica doesn't confuse it with the standard functions.
