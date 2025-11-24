@@ -19,6 +19,13 @@ c[{exp1_,exp2_,exp3_,exp4_}]:={{z[l[1]]^exp1*z[l[2]]^exp2*z[l[3]]^exp3*z[l[4]]^e
 
 
 (* ::Text:: *)
+(*We have a constraint for our C_A's.*)
+
+
+cConstraint[expr_]:=expr/.{a1+a2+a3+a4->1,b1+b2+b3+b4->1}
+
+
+(* ::Text:: *)
 (*Define the commutator. First, we want to make sure we are multiplying/subtracting these things correctly.*)
 
 
@@ -152,7 +159,7 @@ commutator[a_,b_]:=subtract[mixedproduct[a,b],mixedproduct[b,a]]//csubtraction
 (*u and v basis set-up*)
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
 (*Definitions*)
 
 
@@ -160,59 +167,59 @@ commutator[a_,b_]:=subtract[mixedproduct[a,b],mixedproduct[b,a]]//csubtraction
 (*Pretty straightforward. 	We just want to write these new basis elements in the same format at the \LambdaGenerators to get the commutation relations.*)
 
 
-uplus[{p_,mbar_,m_}]:={{(1/2)(p+mbar-1),cLabeled[c[{p+mbar-2,p-mbar-1,-p+m+2,-p-m+2}],l[2]]},
-{+(1/2)(p-mbar-1),cLabeled[c[{p+mbar-1,p-mbar-2,-p+m+2,-p-m+2}],l[1]]}}
-
-
-uminus[{p_,mbar_,m_}]:={{(1/2)(p+mbar-1),cLabeled[c[{p+mbar-2,p-mbar-1,-p+m+2,-p-m+2}],l[2]]},
+uGenerator[{p_,mbar_,m_}]:={{(1/2)(p+mbar-1),cLabeled[c[{p+mbar-2,p-mbar-1,-p+m+2,-p-m+2}],l[2]]},
 {-(1/2)(p-mbar-1),cLabeled[c[{p+mbar-1,p-mbar-2,-p+m+2,-p-m+2}],l[1]]}}
 
 
-vplus[{p_,mbar_,m_}]:={{+(1/2)(-p+m+2),cLabeled[c[{p+mbar-1,p-mbar-1,-p+m+1,-p-m+2}],l[4]]},
-{+(1/2)(-p-m+2),cLabeled[c[{p+mbar-1,p-mbar-1,-p+m+2,-p-m+1}],l[3]]}}
-
-
-vminus[{p_,mbar_,m_}]:={{+(1/2)(-p+m+2),cLabeled[c[{p+mbar-1,p-mbar-1,-p+m+1,-p-m+2}],l[4]]},
+vGenerator[{p_,mbar_,m_}]:={{+(1/2)(-p+m+2),cLabeled[c[{p+mbar-1,p-mbar-1,-p+m+1,-p-m+2}],l[4]]},
 {-(1/2)(-p-m+2),cLabeled[c[{p+mbar-1,p-mbar-1,-p+m+2,-p-m+1}],l[3]]}}
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
 (*Commutation relations*)
 
 
 (* ::Text:: *)
-(*Commutator [ u^+,u^+]*)
+(*Commutator [ u,u]*)
 
 
-commutator[uplus[{p,mbar,m}],uplus[{q,nbar,n}]]//FullSimplify
-
-
-(* ::Text:: *)
-(*Commutator [ u^-,u^-]*)
-
-
-commutator[uminus[{p,mbar,m}],uminus[{q,nbar,n}]]//FullSimplify
+commutator[uGenerator[{p,mbar,m}],uGenerator[{q,nbar,n}]]//FullSimplify
 
 
 (* ::Text:: *)
-(*Commutator [ v^+,v^+]*)
+(*Commutator [ v,v]*)
 
 
-commutator[vplus[{p,mbar,m}],vplus[{q,nbar,n}]]//FullSimplify
+commutator[vGenerator[{p,mbar,m}],vGenerator[{q,nbar,n}]]//FullSimplify
+
+
+(* ::Subsubsection::Closed:: *)
+(*Plus basis (probably will delete later)*)
+
+
+(*vplus[{p_,mbar_,m_}]:={{+(1/2)(-p+m+2),cLabeled[c[{p+mbar-1,p-mbar-1,-p+m+1,-p-m+2}],l[4]]},
+{+(1/2)(-p-m+2),cLabeled[c[{p+mbar-1,p-mbar-1,-p+m+2,-p-m+1}],l[3]]}}*)
+
+
+(*uplus[{p_,mbar_,m_}]:={{(1/2)(p+mbar-1),cLabeled[c[{p+mbar-2,p-mbar-1,-p+m+2,-p-m+2}],l[2]]},
+{+(1/2)(p-mbar-1),cLabeled[c[{p+mbar-1,p-mbar-2,-p+m+2,-p-m+2}],l[1]]}}*)
 
 
 (* ::Text:: *)
-(*Commutator [ v^-,v^-]*)
+(*Commutators:*)
 
 
-commutator[vminus[{p,mbar,m}],vminus[{q,nbar,n}]]//FullSimplify
+(*commutator[uplus[{p,mbar,m}],uplus[{q,nbar,n}]]//FullSimplify*)
+
+
+(*commutator[vplus[{p,mbar,m}],vplus[{q,nbar,n}]]//FullSimplify*)
 
 
 (* ::Subsection:: *)
 (*r and t basis set-up*)
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
 (*Definitions*)
 
 
@@ -220,26 +227,12 @@ commutator[vminus[{p,mbar,m}],vminus[{q,nbar,n}]]//FullSimplify
 (*Same as above, we want to define all our basis elements*)
 
 
-rminus[{a_,b_,c1_,d_}]:={{a,cLabeled[c[{a-1,b,c1,d}],l[2]]},
+rGenerator[{a_,b_,c1_,d_}]:={{a,cLabeled[c[{a-1,b,c1,d}],l[2]]},
 {-b,cLabeled[c[{a,b-1,c1,d}],l[1]]}}
 
 
-rplus[{a_,b_,c1_,d_}]:={{a,cLabeled[c[{a-1,b,c1,d}],l[2]]},
-{b,cLabeled[c[{a,b-1,c1,d}],l[1]]}}
-
-
-tminus[{a_,b_,c1_,d_}]:={{c1,cLabeled[c[{a,b,c1-1,d}],l[4]]},
+tGenerator[{a_,b_,c1_,d_}]:={{c1,cLabeled[c[{a,b,c1-1,d}],l[4]]},
 {-d,cLabeled[c[{a,b,c1,d-1}],l[3]]}}
-
-
-tplus[{a_,b_,c1_,d_}]:={{c1,cLabeled[c[{a,b,c1-1,d}],l[4]]},
-{d,cLabeled[c[{a,b,c1,d-1}],l[3]]}}
-
-
-newtplus[a_,b_,c1_,d_]:={{1,cLabeled[c[a,b,c1,d],l[3]]}}
-
-
-newrplus[a_,b_,c1_,d_]:={{1,cLabeled[c[a,b,c1,d],l[1]]}}
 
 
 (* ::Subsubsection:: *)
@@ -247,66 +240,67 @@ newrplus[a_,b_,c1_,d_]:={{1,cLabeled[c[a,b,c1,d],l[1]]}}
 
 
 (* ::Text:: *)
-(*Commutator [ r^-,r^-]*)
+(*Commutator [ r,r]*)
 
 
-commutator[rminus[{a1,a2,a3,a4}],rminus[{b1,b2,b3,b4}]]//FullSimplify
+commutator[rGenerator[{a1,a2,a3,a4}],rGenerator[{b1,b2,b3,b4}]]//FullSimplify
 
 
 (* ::Text:: *)
-(*Commutator [ r^+,r^+]*)
+(*Commutator [ t,t]*)
+
+
+commutator[tGenerator[{a1,a2,a3,a4}],tGenerator[{b1,b2,b3,b4}]]//FullSimplify
+
+
+(* ::Text:: *)
+(*Commutator [ r,t]*)
+
+
+commutator[rGenerator[{a1,a2,a3,a4}],tGenerator[{b1,b2,b3,b4}]]//FullSimplify
+
+
+(* ::Subsubsection::Closed:: *)
+(*Plus basis (probably will delete later)*)
+
+
+(* ::Text:: *)
+(*Basis elements:*)
+
+
+rplus[{a_,b_,c1_,d_}]:={{a,cLabeled[c[{a-1,b,c1,d}],l[2]]},
+{b,cLabeled[c[{a,b-1,c1,d}],l[1]]}}
+
+
+tplus[{a_,b_,c1_,d_}]:={{c1,cLabeled[c[{a,b,c1-1,d}],l[4]]},
+{d,cLabeled[c[{a,b,c1,d-1}],l[3]]}}
+
+
+(* ::Text:: *)
+(*Commutators:*)
 
 
 rplusrplus=commutator[rplus[{a1,a2,a3,a4}],rplus[{b1,b2,b3,b4}]]//FullSimplify
 
 
-(* ::Text:: *)
-(*Commutator [ r^-,r^+]*)
-
-
-commutator[rminus[{a1,a2,a3,a4}],rplus[{b1,b2,b3,b4}]]//FullSimplify
-
-
-(* ::Text:: *)
-(*so, [ r^+,r^+] and [ r^-,r^+] are quite similar.*)
-
-
-(* ::Text:: *)
-(*Commutator [ t^-,t^-]*)
-
-
-commutator[tminus[{a1,a2,a3,a4}],tminus[{b1,b2,b3,b4}]]//FullSimplify
-
-
-(* ::Text:: *)
-(*Commutator [ t^+,t^+]*)
-
-
 commutator[tplus[{a1,a2,a3,a4}],tplus[{b1,b2,b3,b4}]]//FullSimplify
 
 
-(* ::Text:: *)
-(*Commutator [ r^-,t^-]*)
-
-
-commutator[rminus[{a1,a2,a3,a4}],tminus[{b1,b2,b3,b4}]]//FullSimplify
-
-
-rminus[{a1+b1-1,a2+b2,a3+b3-1,a4+b4}]
-
-
-(* ::Subsubsection:: *)
-(*Finding [r^+,r^+] in terms of r^+ and r^-*)
+commutator[rGenerator[{a1,a2,a3,a4}],rplus[{b1,b2,b3,b4}]]//FullSimplify
 
 
 (* ::Text:: *)
-(*These two test functions are simply to add some coefficient in from of r^- and r^+*)
+(*Finding [r+,r+] in terms of r^+ and r:*)
+
+
+(* ::Text:: *)
+(*-These two test functions are simply to add some coefficient in from of r and r+*)
 
 
 rtestPlus=Flatten[(rplus[{a1+b1-1,a2+b2-1,a3+b3,a4+b4}])/.{x_,{{y_,z_}}}:>{{f*x*y,z}},1];
 
 
-rtestMinus=Flatten[(rminus[{a1+b1-1,a2+b2-1,a3+b3,a4+b4}])/.{x_,{{y_,z_}}}:>{{g*x*y,z}},1];
+rtestMinus=Flatten[(rGenerator[{a1+b1-1,a2+b2-1,a3+b3,a4+b4}])/.{x_,{{y_,z_}}}:>{{g*x*y,z}},1];
 
 
 testingrGenerator[frep_,grep_]:=add[{rtestPlus/.f->frep,rtestMinus/.g->grep}]//caddition
@@ -316,7 +310,7 @@ testingrGenerator[f,g]//FullSimplify
 
 
 (* ::Text:: *)
-(*The target polynomials are the polynomials showing up in front of C_2 and C_1 in [r^+,r^+]*)
+(*-The target polynomials are the polynomials showing up in front of C_2 and C_1 in [r+,r+]*)
 
 
 targetpolynomialc2[a1_,a2_,b1_,b2_]:=(a2 b1 (-1-a1+b1)+a1 (1-a1+b1) b2)//Expand ;
@@ -326,7 +320,7 @@ targetpolynomialc1[a1_,a2_,b1_,b2_]:=(-a2^2 b1+a1 (-1+b2) b2+a2 (b1-a1 b2+b1 b2)
 
 
 (* ::Text:: *)
-(*The test functions are our ansatz for the coefficients:*)
+(*-The test functions are our ansatz for the coefficients:*)
 
 
 testfunction1[a1_,a2_,b1_,b2_]:=(1/2)((targetpolynomialc2[a1,a2,b1,b2]/(a1+b1-1))+(targetpolynomialc1[a1,a2,b1,b2]/(a2+b2-1)));
@@ -336,7 +330,7 @@ testfunction2[a1_,a2_,b1_,b2_]:=(1/2)((targetpolynomialc2[a1,a2,b1,b2]/(a1+b1-1)
 
 
 (* ::Text:: *)
-(*Finally, we want to see that the expressions we get after including our coefficients is the same as [r^+,r^+]*)
+(*-Finally, we want to see that the expressions we get after including our coefficients is the same as [r^+,r^+]*)
 
 
 finalrtest=testingrGenerator[testfunction1[a1,a2,b1,b2],testfunction2[a1,a2,b1,b2]]//FullSimplify
@@ -349,8 +343,8 @@ finalrtest===rplusrplus
 (*Great!*)
 
 
-(* ::Subsection:: *)
-(*from r and t to u and v*)
+(* ::Text:: *)
+(*-Thinking about going from r and t to u and v:*)
 
 
 testfunction1[p+mbar-1,p-mbar-1,q+nbar-1,1-nbar-1]//FullSimplify
@@ -359,77 +353,87 @@ testfunction1[p+mbar-1,p-mbar-1,q+nbar-1,1-nbar-1]//FullSimplify
 testfunction2[p+mbar-1,p-mbar-1,q+nbar-1,1-nbar-1]//FullSimplify
 
 
-(* ::Subsection::Closed:: *)
-(*Testing for Polynomials*)
+(* ::Subsection:: *)
+(*Dilatation and H generators*)
 
 
-listOfPolynomials=Module[{list,secondlist,thirdlist, fourthlist},
-list=Subsets[{a1,a2,b1,b2},{1,2}];
-secondlist=Flatten[Complement[If[Length[#]==1,(#/.{y_}:>{{y},{y^2}}),#]&/@list,list],1];
-thirdlist=Map[#/.List->Times&,Union[list,secondlist],2];
-fourthlist=\[Alpha][#]&/@Range[Length[thirdlist]];
-Total[MapThread[h,{thirdlist,fourthlist}]/.h->Times]];
+(* ::Subsubsection:: *)
+(*Definitions and basic commutators*)
 
 
-listOfPolynomials
+(* ::Text:: *)
+(*We are doing to define our dilatation generators and the generators of the ideal H. We have for H[b_i] and D[b_i] the constraint that \sum b_i = 0. In order to make our commutation relations nicer, we can define the b_i constraint:*)
 
 
-polynomialc2=(-1+a1+b1)(a1 \[Alpha][1]+a1^2 \[Alpha][2]+a2 \[Alpha][3]+a2^2 \[Alpha][4]+b1 \[Alpha][5]+b1^2 \[Alpha][6]+b2 \[Alpha][7]+b2^2 \[Alpha][8]+a1 a2 \[Alpha][9]+a1 b1 \[Alpha][10]+a1 b2 \[Alpha][11]+a2 b1 \[Alpha][12]+a2 b2 \[Alpha][13]+b1 b2 \[Alpha][14])//Expand;
+biConstraint[expr_]:=expr//.{a1+a2+a3+a4->0,b1+b2+b3+b4->0,-a1-a2-a3-a4->0,-b1-b2-b3-b4->0,{0,c_}:>{0,0}}
 
 
-polynomialc1=(1-a2-b2)(a1 \[Alpha][1]+a1^2 \[Alpha][2]+a2 \[Alpha][3]+a2^2 \[Alpha][4]+b1 \[Alpha][5]+b1^2 \[Alpha][6]+b2 \[Alpha][7]+b2^2 \[Alpha][8]+a1 a2 \[Alpha][9]+a1 b1 \[Alpha][10]+a1 b2 \[Alpha][11]+a2 b1 \[Alpha][12]+a2 b2 \[Alpha][13]+b1 b2 \[Alpha][14])//Expand;
+(* ::Text:: *)
+(*We define the dilatation generator below:*)
 
 
+dGenerator[{a_,b_,c1_,d_}]:={{1,cLabeled[c[{a+1,b,c1,d}],l[1]]},
+{1,cLabeled[c[{a,b+1,c1,d}],l[2]]},
+{1,cLabeled[c[{a,b,c1+1,d}],l[3]]},
+{1,cLabeled[c[{a,b,c1,d+1}],l[4]]}}
 
 
+(* ::Text:: *)
+(*Then, we commutator [D,D]:*)
 
 
+commutator[dGenerator[{a1,a2,a3,a4}],dGenerator[{b1,b2,b3,b4}]]//FullSimplify
 
 
-CoefficientArrays[{targetpolynomialc2-polynomialc2== 0}, {a1, a2, 
-  b1,b2}]
+(* ::Text:: *)
+(*which gives another dilation D[a_i+b_i].*)
+(*Then, we define our H generators:*)
 
 
-diff2 = Expand[targetpolynomialc2 - polynomialc2];
-
-{const, linear, quad, cross} = CoefficientArrays[diff, {a1, a2, b1, b2}];
-
-allCoeffs2 = Join[
-    {const},
-    Normal[linear],
-    Flatten[Normal[quad]],
-    Flatten[Normal[cross]]
-];
-
-eqs2 = Thread[allCoeffs == 0];
-
-Reduce[eqs2]
+hGenerator[{a_,b_,c1_,d_}]:={{1,cLabeled[c[{a+1,b,c1,d}],l[1]]},
+{1,cLabeled[c[{a,b+1,c1,d}],l[2]]},
+{1,cLabeled[c[{a,b,c1+1,d}],l[3]]},
+{1,cLabeled[c[{a,b,c1,d+1}],l[4]]}}
 
 
-eqs
+(* ::Text:: *)
+(*We compute the commutator [H,H]*)
 
 
-diff1 = Expand[targetpolynomialc1 - polynomialc1];
-
-{const, linear, quad, cross} = CoefficientArrays[diff, {a1, a2, b1, b2}];
-
-allCoeffs1 = Join[
-    {const},
-    Normal[linear],
-    Flatten[Normal[quad]],
-    Flatten[Normal[cross]]
-];
-
-eqs1 = Thread[allCoeffs == 0];
-
-Reduce[eqs1]
+commutator[hGenerator[{a1,a2,a3,a4}],hGenerator[{b1,b2,b3,b4}]]//FullSimplify//biConstraint
 
 
-polynomialc2//Factor
+(* ::Text:: *)
+(*We can see the H generators commute with each other.*)
 
 
-(* ::InheritFromParent:: *)
-(* (a1 \[Alpha][1]+a1^2 \[Alpha][2]+a2 \[Alpha][3]+a2^2 \[Alpha][4]+b1 \[Alpha][5]+b1^2 \[Alpha][6]+b2 \[Alpha][7]+b2^2 \[Alpha][8]+a1 a2 \[Alpha][9]+a1 b1 \[Alpha][10]+a1 b2 \[Alpha][11]+a2 b1 \[Alpha][12]+a2 b2 \[Alpha][13]+b1 b2 \[Alpha][14])*)
+(* ::Subsubsection:: *)
+(*Commutators with C_A, r and t. *)
 
 
-targetpolynomialc2//Factor
+(* ::Text:: *)
+(*Now, we want to make sure that [H,C_A] for some generic C_A returns ~ H*)
+
+
+arbitraryc[{a_,b_,c1_,d_,e_}]:={{1,cLabeled[c[{a,b,c1,d}],l[e]]}}
+
+
+commutator[hGenerator[{a1,a2,a3,a4}],arbitraryc[{b1,b2,b3,b4,1}]]//FullSimplify//cConstraint
+
+
+(* ::Text:: *)
+(*This gives us H[a1+b1-1, a_i+b_i]. *)
+
+
+(* ::Text:: *)
+(* [r,D];*)
+
+
+(commutator[rGenerator[{a1,a2,a3,a4}],dGenerator[{b1,b2,b3,b4}]]//FullSimplify)/.{-a3-a4->-2+a1+a2,a3+a4->2-a1-a2}//FullSimplify
+
+
+(* ::Text:: *)
+(*Then, [t,D]:*)
+
+
+(commutator[tGenerator[{a1,a2,a3,a4}],dGenerator[{b1,b2,b3,b4}]]//FullSimplify)/.{-a1-a2->-2+a3+a4,a1+a2->2-a3-a4}//FullSimplify
