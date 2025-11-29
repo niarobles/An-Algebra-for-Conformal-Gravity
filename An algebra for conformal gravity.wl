@@ -215,7 +215,7 @@ commutator[vGenerator[{p,mbar,m}],vGenerator[{q,nbar,n}]]//FullSimplify
 (*commutator[vplus[{p,mbar,m}],vplus[{q,nbar,n}]]//FullSimplify*)
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*r and t basis set-up*)
 
 
@@ -357,7 +357,7 @@ testfunction2[p+mbar-1,p-mbar-1,q+nbar-1,1-nbar-1]//FullSimplify
 (*Dilatation and H generators*)
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
 (*Definitions and basic commutators*)
 
 
@@ -466,8 +466,12 @@ dTest[{a1_,a2_,a3_,a4_}]:=dGenerator[{a1,a2,a3,a4}]/.{x_,{{y_,z_}}}:>{m*x*y,z}
 hTest[{a1_,a2_,a3_,a4_}]:=hGenerator[{a1,a2,a3,a4}]/.{x_,{{y_,z_}}}:>{k*x*y,z}
 
 
+(* ::Subsubsection:: *)
+(*Rewriting C1 and C2*)
+
+
 (* ::Text:: *)
-(*This set of rules should allow us to isolate C1 and C2:*)
+(*Set g=0, then this set of rules should allow us to isolate C1 and C2:*)
 
 
 c1Rules={k->m,k+m->-f-a1*f,f->-1/(2+a1+a2)};
@@ -486,13 +490,45 @@ c2Rules={k->m,k+m->f+a2*f,f->1/(2+a1+a2)};
 ((add[{rTest[{a1+1,a2+1,a3,a4}],dTest[{a1,a2,a3,a4}],hTest[{a1,a2,a3,a4}]}]//caddition//FullSimplify)//.c2Rules//Simplify)/.{0,c_}:>{0,0}//Union
 
 
+(* ::Subsubsection:: *)
+(*Rewriting C3 and C4*)
+
+
+(* ::Text:: *)
+(*Set f=0, and this set of rules should allow us to isolate C3 and C4:*)
+
+
+c3Rules={m->-k,k->-g((1+a3)/2),g->-1/(2+a3+a4)};
+
+
+c4Rules={m->-k,k->g((1+a4)/2),g->1/(2+a3+a4)};
+
+
+(* ::Text:: *)
+(*Check:*)
+
+
+((add[{tTest[{a1,a2,a3+1,a4+1}],dTest[{a1,a2,a3,a4}],hTest[{a1,a2,a3,a4}]}]//caddition//FullSimplify)//.c3Rules//Simplify)/.{0,c_}:>{0,0}//Union
+
+
+((add[{tTest[{a1,a2,a3+1,a4+1}],dTest[{a1,a2,a3,a4}],hTest[{a1,a2,a3,a4}]}]//caddition//FullSimplify)//.c4Rules//Simplify)/.{0,c_}:>{0,0}//Union
+
+
+(* ::Subsection:: *)
+(*Rewriting the commutators as a linear combination of r, t, D and H*)
+
+
+(* ::Subsubsection:: *)
+(*[r,D] commutator*)
+
+
 (* ::Text:: *)
 (*Now, we can find the set of rules to express our commutator as a linear combination of r, D and H.*)
 
 
 rDCommutatorRules={f->((2(a3+a4)(a1+a2))/(a1+b1+a2+b2)),
-m->((a1*b2-a2*b1)+((a3+a4)/(a1+b1+a2+b2))*(a1(a2+b2)-a2(a1+b1))),
-k->(((a3+a4)/(a1+b1+a2+b2))(a1(a2+b2)-a2(a1+b1)))};
+m->(a1*b2-a2*b1)(1+((a3+a4)/(a1+b1+a2+b2))),
+k->(((a3+a4)/(a1+b1+a2+b2))(a1*b2-a2*b1))};
 
 
 (((add[{rTest[{a1+b1,a2+b2,a3+b3,a4+b4}],dTest[{a1+b1-1,a2+b2-1,a3+b3,a4+b4}],
@@ -506,12 +542,6 @@ hTest[{a1+b1-1,a2+b2-1,a3+b3,a4+b4}]}]//caddition//FullSimplify)//.rDCommutatorR
 (commutator[rGenerator[{a1,a2,a3,a4}],dGenerator[{b1,b2,b3,b4}]]//FullSimplify)/.{-a3-a4->-2+a1+a2,a3+a4->2-a1-a2}//FullSimplify
 
 
-(2 a2 (-2+a1+a2)-a2 b1+a1 b2)//Expand
-
-
-(2 a2 (-2+a1+a2)-a2 b1+a1 b2)//Expand
-
-
 (-2 a1^2-a2 b1+a1 (4-2 a2+b2))//Expand
 
 
@@ -520,3 +550,61 @@ hTest[{a1+b1-1,a2+b2-1,a3+b3,a4+b4}]}]//caddition//FullSimplify)//.rDCommutatorR
 
 (* ::Text:: *)
 (*We see they agree!*)
+
+
+(* ::Subsubsection:: *)
+(*[t,D] commutator*)
+
+
+(* ::Text:: *)
+(*Now, we can find the set of rules to express our commutator as a linear combination of t, D and H.*)
+
+
+tDCommutatorRules={g->((-1)(2(a3+a4)(a1+a2))/(a3+b3+a4+b4)),
+m->(a3*b4-a4*b3)(1-((-1)(a1+a2)/(a3+b3+a4+b4))),
+k->((-1)((a1+a2)/(a3+b3+a4+b4))(a3*b4-a4*b3))};
+
+
+(((add[{tTest[{a1+b1,a2+b2,a3+b3,a4+b4}],dTest[{a1+b1,a2+b2,a3+b3-1,a4+b4-1}],
+hTest[{a1+b1,a2+b2,a3+b3-1,a4+b4-1}]}]//caddition//FullSimplify)//.tDCommutatorRules)//FullSimplify)/.{-a1-a2->-2+a3+a4,a1+a2->2-a3-a4}//FullSimplify
+
+
+(* ::Text:: *)
+(*Check with the commutator:*)
+
+
+(commutator[tGenerator[{a1,a2,a3,a4}],dGenerator[{b1,b2,b3,b4}]]//FullSimplify)/.{-a1-a2->-2+a3+a4,a1+a2->2-a3-a4}//FullSimplify
+
+
+(* ::Text:: *)
+(*We see they agree!*)
+
+
+(* ::Subsubsection:: *)
+(*[r,t] commutator*)
+
+
+(* ::Text:: *)
+(*Now, we can find the set of rules to express our commutator as a linear combination of t, D and H.*)
+
+
+rtCommutatorRules={f->(((a3*b4-a4*b3)(a1+a2))/(a1+a2+b1+b2)),
+g->(((a1*b2-a2*b1)(b3+b4))/(a3+a4+b3+b4)),
+m->(((a3*b4-a4*b3)(a1*b2-a2*b1))/(2(a1+a2+b1+b2)))+(((a3*b4-a4*b3)(a1*b2-a2*b1))/(2(a4+a3+b4+b3))),
+k->(((a3*b4-a4*b3)(a1*b2-a2*b1))/(2(a1+a2+b1+b2)))+(-1)(((a3*b4-a4*b3)(a1*b2-a2*b1))/(2(a3+a4+b3+b4)))};
+
+
+(((add[{rTest[{a1+b1,a2+b2,a3+b3-1,a4+b4-1}],dTest[{a1+b1-1,a2+b2-1,a3+b3-1,a4+b4-1}],tTest[{a1+b1-1,a2+b2-1,a3+b3,a4+b4}],
+hTest[{a1+b1-1,a2+b2-1,a3+b3-1,a4+b4-1}]}]//caddition//FullSimplify)//.rtCommutatorRules)//FullSimplify)//Sort
+
+
+(* ::Text:: *)
+(*Check with the commutator:*)
+
+
+(* ::Code::Initialization::Bold:: *)
+(commutator[rGenerator[{a1,a2,a3,a4}],tGenerator[{b1,b2,b3,b4}]]//FullSimplify)//Sort
+
+
+(* ::Text:: *)
+(*They are the same!*)
