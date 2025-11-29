@@ -219,7 +219,7 @@ commutator[vGenerator[{p,mbar,m}],vGenerator[{q,nbar,n}]]//FullSimplify
 (*r and t basis set-up*)
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*Definitions*)
 
 
@@ -374,8 +374,8 @@ biConstraint[expr_]:=expr//.{a1+a2+a3+a4->0,b1+b2+b3+b4->0,-a1-a2-a3-a4->0,-b1-b
 
 dGenerator[{a_,b_,c1_,d_}]:={{1,cLabeled[c[{a+1,b,c1,d}],l[1]]},
 {1,cLabeled[c[{a,b+1,c1,d}],l[2]]},
-{1,cLabeled[c[{a,b,c1+1,d}],l[3]]},
-{1,cLabeled[c[{a,b,c1,d+1}],l[4]]}}
+{-1,cLabeled[c[{a,b,c1+1,d}],l[3]]},
+{-1,cLabeled[c[{a,b,c1,d+1}],l[4]]}}
 
 
 (* ::Text:: *)
@@ -437,3 +437,86 @@ commutator[hGenerator[{a1,a2,a3,a4}],arbitraryc[{b1,b2,b3,b4,1}]]//FullSimplify/
 
 
 (commutator[tGenerator[{a1,a2,a3,a4}],dGenerator[{b1,b2,b3,b4}]]//FullSimplify)/.{-a1-a2->-2+a3+a4,a1+a2->2-a3-a4}//FullSimplify
+
+
+(* ::Text:: *)
+(*Finally, [r,t]*)
+
+
+(commutator[rGenerator[{a1,a2,a3,a4}],tGenerator[{b1,b2,b3,b4}]]//FullSimplify)
+
+
+(* ::Subsection:: *)
+(*Writing C_A in terms of r,t,D,H*)
+
+
+(* ::Text:: *)
+(*We are going to add a coefficient in front of each generator, and find C1 and C2 in terms of r, t, D and H:*)
+
+
+rTest[{a1_,a2_,a3_,a4_}]:=rGenerator[{a1,a2,a3,a4}]/.{x_,{{y_,z_}}}:>{f*x*y,z}
+
+
+tTest[{a1_,a2_,a3_,a4_}]:=tGenerator[{a1,a2,a3,a4}]/.{x_,{{y_,z_}}}:>{g*x*y,z}
+
+
+dTest[{a1_,a2_,a3_,a4_}]:=dGenerator[{a1,a2,a3,a4}]/.{x_,{{y_,z_}}}:>{m*x*y,z}
+
+
+hTest[{a1_,a2_,a3_,a4_}]:=hGenerator[{a1,a2,a3,a4}]/.{x_,{{y_,z_}}}:>{k*x*y,z}
+
+
+(* ::Text:: *)
+(*This set of rules should allow us to isolate C1 and C2:*)
+
+
+c1Rules={k->m,k+m->-f-a1*f,f->-1/(2+a1+a2)};
+
+
+c2Rules={k->m,k+m->f+a2*f,f->1/(2+a1+a2)};
+
+
+(* ::Text:: *)
+(*Check:*)
+
+
+((add[{rTest[{a1+1,a2+1,a3,a4}],dTest[{a1,a2,a3,a4}],hTest[{a1,a2,a3,a4}]}]//caddition//FullSimplify)//.c1Rules//Simplify)/.{0,c_}:>{0,0}//Union
+
+
+((add[{rTest[{a1+1,a2+1,a3,a4}],dTest[{a1,a2,a3,a4}],hTest[{a1,a2,a3,a4}]}]//caddition//FullSimplify)//.c2Rules//Simplify)/.{0,c_}:>{0,0}//Union
+
+
+(* ::Text:: *)
+(*Now, we can find the set of rules to express our commutator as a linear combination of r, D and H.*)
+
+
+rDCommutatorRules={f->((2(a3+a4)(a1+a2))/(a1+b1+a2+b2)),
+m->((a1*b2-a2*b1)+((a3+a4)/(a1+b1+a2+b2))*(a1(a2+b2)-a2(a1+b1))),
+k->(((a3+a4)/(a1+b1+a2+b2))(a1(a2+b2)-a2(a1+b1)))};
+
+
+(((add[{rTest[{a1+b1,a2+b2,a3+b3,a4+b4}],dTest[{a1+b1-1,a2+b2-1,a3+b3,a4+b4}],
+hTest[{a1+b1-1,a2+b2-1,a3+b3,a4+b4}]}]//caddition//FullSimplify)//.rDCommutatorRules)//FullSimplify)/.{-a3-a4->-2+a1+a2,a3+a4->2-a1-a2}//FullSimplify
+
+
+(* ::Text:: *)
+(*Check with the commutator:*)
+
+
+(commutator[rGenerator[{a1,a2,a3,a4}],dGenerator[{b1,b2,b3,b4}]]//FullSimplify)/.{-a3-a4->-2+a1+a2,a3+a4->2-a1-a2}//FullSimplify
+
+
+(2 a2 (-2+a1+a2)-a2 b1+a1 b2)//Expand
+
+
+(2 a2 (-2+a1+a2)-a2 b1+a1 b2)//Expand
+
+
+(-2 a1^2-a2 b1+a1 (4-2 a2+b2))//Expand
+
+
+(-a2 b1+a1 (-2 (-2+a1+a2)+b2))//Expand
+
+
+(* ::Text:: *)
+(*We see they agree!*)
