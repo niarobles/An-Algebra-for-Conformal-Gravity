@@ -4,7 +4,7 @@
 (*An Algebra For Conformal Gravity*)
 
 
-(* ::Section:: *)
+(* ::Section::Closed:: *)
 (*Definitions*)
 
 
@@ -83,7 +83,7 @@ generators=Flatten[c[#]&/@Permutations[{1,0,0,0}],1][[1;;-2]]
 applycommutators=(Map[Abs,Flatten[(csubtraction/@(precommutator/@Map[List,Distribute[{generators,generators},List],{2}])),1],{2}]//DeleteDuplicates)/.Abs[x_]:>x
 
 
-(* ::Section:: *)
+(* ::Section::Closed:: *)
 (*\[CapitalLambda]-deformed w-algebra*)
 
 
@@ -156,67 +156,7 @@ commutator[a_,b_]:=subtract[mixedproduct[a,b],mixedproduct[b,a]]//csubtraction
 
 
 (* ::Subsection:: *)
-(*u and v basis set-up*)
-
-
-(* ::Subsubsection::Closed:: *)
-(*Definitions*)
-
-
-(* ::Text:: *)
-(*Pretty straightforward. 	We just want to write these new basis elements in the same format at the \LambdaGenerators to get the commutation relations.*)
-
-
-uGenerator[{p_,mbar_,m_}]:={{(1/2)(p+mbar-1),cLabeled[c[{p+mbar-2,p-mbar-1,-p+m+2,-p-m+2}],l[2]]},
-{-(1/2)(p-mbar-1),cLabeled[c[{p+mbar-1,p-mbar-2,-p+m+2,-p-m+2}],l[1]]}}
-
-
-vGenerator[{p_,mbar_,m_}]:={{+(1/2)(-p+m+2),cLabeled[c[{p+mbar-1,p-mbar-1,-p+m+1,-p-m+2}],l[4]]},
-{-(1/2)(-p-m+2),cLabeled[c[{p+mbar-1,p-mbar-1,-p+m+2,-p-m+1}],l[3]]}}
-
-
-(* ::Subsubsection::Closed:: *)
-(*Commutation relations*)
-
-
-(* ::Text:: *)
-(*Commutator [ u,u]*)
-
-
-commutator[uGenerator[{p,mbar,m}],uGenerator[{q,nbar,n}]]//FullSimplify
-
-
-(* ::Text:: *)
-(*Commutator [ v,v]*)
-
-
-commutator[vGenerator[{p,mbar,m}],vGenerator[{q,nbar,n}]]//FullSimplify
-
-
-(* ::Subsubsection::Closed:: *)
-(*Plus basis (probably will delete later)*)
-
-
-(*vplus[{p_,mbar_,m_}]:={{+(1/2)(-p+m+2),cLabeled[c[{p+mbar-1,p-mbar-1,-p+m+1,-p-m+2}],l[4]]},
-{+(1/2)(-p-m+2),cLabeled[c[{p+mbar-1,p-mbar-1,-p+m+2,-p-m+1}],l[3]]}}*)
-
-
-(*uplus[{p_,mbar_,m_}]:={{(1/2)(p+mbar-1),cLabeled[c[{p+mbar-2,p-mbar-1,-p+m+2,-p-m+2}],l[2]]},
-{+(1/2)(p-mbar-1),cLabeled[c[{p+mbar-1,p-mbar-2,-p+m+2,-p-m+2}],l[1]]}}*)
-
-
-(* ::Text:: *)
-(*Commutators:*)
-
-
-(*commutator[uplus[{p,mbar,m}],uplus[{q,nbar,n}]]//FullSimplify*)
-
-
-(*commutator[vplus[{p,mbar,m}],vplus[{q,nbar,n}]]//FullSimplify*)
-
-
-(* ::Subsection::Closed:: *)
-(*r and t basis set-up*)
+(*r and t generators*)
 
 
 (* ::Subsubsection:: *)
@@ -240,21 +180,21 @@ tGenerator[{a_,b_,c1_,d_}]:={{c1,cLabeled[c[{a,b,c1-1,d}],l[4]]},
 
 
 (* ::Text:: *)
-(*Commutator [ r,r]*)
+(*Commutator [r,r]*)
 
 
 commutator[rGenerator[{a1,a2,a3,a4}],rGenerator[{b1,b2,b3,b4}]]//FullSimplify
 
 
 (* ::Text:: *)
-(*Commutator [ t,t]*)
+(*Commutator [t,t]*)
 
 
 commutator[tGenerator[{a1,a2,a3,a4}],tGenerator[{b1,b2,b3,b4}]]//FullSimplify
 
 
 (* ::Text:: *)
-(*Commutator [ r,t]*)
+(*Commutator [r,t]*)
 
 
 commutator[rGenerator[{a1,a2,a3,a4}],tGenerator[{b1,b2,b3,b4}]]//FullSimplify
@@ -353,7 +293,7 @@ testfunction1[p+mbar-1,p-mbar-1,q+nbar-1,1-nbar-1]//FullSimplify
 testfunction2[p+mbar-1,p-mbar-1,q+nbar-1,1-nbar-1]//FullSimplify
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Dilatation and H generators*)
 
 
@@ -446,7 +386,7 @@ commutator[hGenerator[{a1,a2,a3,a4}],arbitraryc[{b1,b2,b3,b4,1}]]//FullSimplify/
 (commutator[rGenerator[{a1,a2,a3,a4}],tGenerator[{b1,b2,b3,b4}]]//FullSimplify)
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Writing C_A in terms of r,t,D,H*)
 
 
@@ -608,3 +548,134 @@ hTest[{a1+b1-1,a2+b2-1,a3+b3-1,a4+b4-1}]}]//caddition//FullSimplify)//.rtCommuta
 
 (* ::Text:: *)
 (*They are the same!*)
+
+
+(* ::Section:: *)
+(*Celestial Basis*)
+
+
+(* ::Subsection:: *)
+(*Generators*)
+
+
+uGenerator[{p_,mbar_,m_}]:=rGenerator[{p+mbar-1,p-mbar-1,-p+m+2,-p-m+2}]/.{x_,{{y_,z_}}}:>{(1/2)*x,{{y,z}}}
+
+
+vGenerator[{p_,mbar_,m_}]:=tGenerator[{p+mbar-1,p-mbar-1,-p+m+2,-p-m+2}]/.{x_,{{y_,z_}}}:>{(1/2)*x,{{y,z}}}
+
+
+dCelGenerator[{p_,mbar_,m_}]:=dGenerator[{p+mbar-1,p-mbar-1,-p+m+1,-p-m+1}]/.{x_,{{y_,z_}}}:>{(1/4)*x,{{y,z}}}
+
+
+(* ::Subsection:: *)
+(*Commutator relations*)
+
+
+(* ::Subsubsection::Closed:: *)
+(*[u,u] commutator*)
+
+
+commutator[uGenerator[{p,mbar,m}],uGenerator[{q,nbar,n}]]//FullSimplify
+
+
+(* ::Subsubsection::Closed:: *)
+(*[v,v] commutator*)
+
+
+commutator[vGenerator[{p,mbar,m}],vGenerator[{q,nbar,n}]]//FullSimplify
+
+
+(* ::Subsubsection::Closed:: *)
+(*[d,d] commutator*)
+
+
+commutator[dCelGenerator[{p,mbar,m}],dCelGenerator[{q,nbar,n}]]//FullSimplify
+
+
+(* ::Subsubsection::Closed:: *)
+(*[u,d] commutator*)
+
+
+commutator[uGenerator[{p,mbar,m}],dCelGenerator[{q,nbar,n}]]//FullSimplify
+
+
+(* ::Subsubsection::Closed:: *)
+(*[v,d] commutator*)
+
+
+commutator[vGenerator[{p,mbar,m}],dCelGenerator[{q,nbar,n}]]//FullSimplify
+
+
+(* ::Subsubsection::Closed:: *)
+(*[u,v] commutator*)
+
+
+commutator[uGenerator[{p,mbar,m}],vGenerator[{q,nbar,n}]]//FullSimplify
+
+
+(* ::Subsection:: *)
+(*Finding the commutator coefficients*)
+
+
+(* ::Subsubsection:: *)
+(*[u,d] commutator*)
+
+
+uDCommutatorRules[{{p_,mbar_,m_},{q_,nbar_,n_}}]:=Module[{a1,a2,a3,a4,b1,b2,b3,b4},
+a1=p+mbar-1;
+a2=p-mbar-1;
+a3=-p+m+2;
+a4=-p-m+2;
+b1=q+nbar-1;
+b2=q-nbar-1;
+b3=-q+n+1;
+b4=-q-n+1;
+{uCoefficient->((2(a3+a4)(a1+a2))/(a1+b1+a2+b2)),
+dCoefficient->(a1*b2-a2*b1)(1+((a3+a4)/(a1+b1+a2+b2))),
+hCoefficient->(((a3+a4)/(a1+b1+a2+b2))(a1*b2-a2*b1))}//FullSimplify]
+
+
+uDCommutatorRules[{{p,mbar,m},{q,nbar,n}}]
+
+
+(* ::Subsubsection:: *)
+(*[v,d] commutator*)
+
+
+vDCommutatorRules[{{p_,mbar_,m_},{q_,nbar_,n_}}]:=Module[{a1,a2,a3,a4,b1,b2,b3,b4},
+a1=p+mbar-1;
+a2=p-mbar-1;
+a3=-p+m+2;
+a4=-p-m+2;
+b1=q+nbar-1;
+b2=q-nbar-1;
+b3=-q+n+1;
+b4=-q-n+1;
+{vCoefficient->((-1)(2(a3+a4)(a1+a2))/(a3+b3+a4+b4)),
+dCoefficient->(a3*b4-a4*b3)(1-((-1)(a1+a2)/(a3+b3+a4+b4))),
+hCoefficient->((-1)((a1+a2)/(a3+b3+a4+b4))(a3*b4-a4*b3))}//FullSimplify]
+
+
+vDCommutatorRules[{{p,mbar,m},{q,nbar,n}}]
+
+
+(* ::Subsubsection:: *)
+(*[u,v] commutator*)
+
+
+uvCommutatorRules[{{p_,mbar_,m_},{q_,nbar_,n_}}]:=Module[{a1,a2,a3,a4,b1,b2,b3,b4},
+a1=p+mbar-1;
+a2=p-mbar-1;
+a3=-p+m+2;
+a4=-p-m+2;
+b1=q+nbar-1;
+b2=q-nbar-1;
+b3=-q+n+2;
+b4=-q-n+2;
+{uCoefficient->(((a3*b4-a4*b3)(a1+a2))/(a1+a2+b1+b2)),
+vCoefficient->(((a1*b2-a2*b1)(b3+b4))/(a3+a4+b3+b4)),
+dCoefficient->(((a3*b4-a4*b3)(a1*b2-a2*b1))/(2(a1+a2+b1+b2)))+(((a3*b4-a4*b3)(a1*b2-a2*b1))/(2(a4+a3+b4+b3))),
+hCoefficient->(((a3*b4-a4*b3)(a1*b2-a2*b1))/(2(a1+a2+b1+b2)))+(-1)(((a3*b4-a4*b3)(a1*b2-a2*b1))/(2(a3+a4+b3+b4)))}//FullSimplify]
+
+
+uvCommutatorRules[{{p,mbar,m},{q,nbar,n}}]
