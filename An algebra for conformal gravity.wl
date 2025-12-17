@@ -748,24 +748,16 @@ dDdiv/.{a2->-a1,a4->-a3,b2->-b1,b4->-b3}
 
 
 (* ::Text:: *)
-(*For [r[a_i],D[b_i]] and [t[a_i],D[b_i]] the divergence doesn't vanish by sending b2=-b1 and b4=-b3 alone*)
+(*For [r[a_i],D[b_i]] and [t[a_i],D[b_i]] the divergence vanishes by sending b2=-b1 and b4=-b3 *)
 
 
-rDdiv=(Total@(div[rDcomm//commutatorToBasis]//Flatten))//FullSimplify
+rDdiv=((Total@(div[rDcomm//commutatorToBasis]//Flatten))//FullSimplify)/.a1+a2+a3+a4->2
 
 
-tDdiv=(Total@(div[tDcomm//commutatorToBasis]//Flatten))//FullSimplify
+tDdiv=((Total@(div[tDcomm//commutatorToBasis]//Flatten))//FullSimplify)/.a1+a2+a3+a4->2
 
 
-(* ::Text:: *)
-(*We need a1=-a2 for div[r[a_i],D[b_i]] to vanish:*)
+(rDdiv/.{b2->-b1,b4->-b3}//FullSimplify)
 
 
-rDdiv/.{b2->-b1,b4->-b3}//FullSimplify
-
-
-(* ::Text:: *)
-(*and we need a4=-a3 for div[t[a_i],D[b_i]] to vanish:*)
-
-
-tDdiv/.{b2->-b1,b4->-b3}//FullSimplify
+(tDdiv/.{b2->-b1,b4->-b3}//FullSimplify)
