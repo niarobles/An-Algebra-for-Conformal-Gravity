@@ -4,7 +4,7 @@
 (*An Algebra For Conformal Gravity*)
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Definitions*)
 
 
@@ -83,7 +83,7 @@ generators=Flatten[c[#]&/@Permutations[{1,0,0,0}],1][[1;;-2]]
 applycommutators=(Map[Abs,Flatten[(csubtraction/@(precommutator/@Map[List,Distribute[{generators,generators},List],{2}])),1],{2}]//DeleteDuplicates)/.Abs[x_]:>x
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*\[CapitalLambda]-deformed w-algebra*)
 
 
@@ -183,21 +183,21 @@ tGenerator[{a_,b_,c1_,d_}]:={{c1,cLabeled[c[{a,b,c1-1,d}],l[4]]},
 (*Commutator [r,r]*)
 
 
-commutator[rGenerator[{a1,a2,a3,a4}],rGenerator[{b1,b2,b3,b4}]]//FullSimplify
+rrcomm=commutator[rGenerator[{a1,a2,a3,a4}],rGenerator[{b1,b2,b3,b4}]]//FullSimplify
 
 
 (* ::Text:: *)
 (*Commutator [t,t]*)
 
 
-commutator[tGenerator[{a1,a2,a3,a4}],tGenerator[{b1,b2,b3,b4}]]//FullSimplify
+ttcomm=commutator[tGenerator[{a1,a2,a3,a4}],tGenerator[{b1,b2,b3,b4}]]//FullSimplify
 
 
 (* ::Text:: *)
 (*Commutator [r,t]*)
 
 
-commutator[rGenerator[{a1,a2,a3,a4}],tGenerator[{b1,b2,b3,b4}]]//FullSimplify
+rtcomm=commutator[rGenerator[{a1,a2,a3,a4}],tGenerator[{b1,b2,b3,b4}]]//FullSimplify
 
 
 (* ::Subsubsection::Closed:: *)
@@ -293,11 +293,11 @@ testfunction1[p+mbar-1,p-mbar-1,q+nbar-1,1-nbar-1]//FullSimplify
 testfunction2[p+mbar-1,p-mbar-1,q+nbar-1,1-nbar-1]//FullSimplify
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Dilatation and H generators*)
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*Definitions and basic commutators*)
 
 
@@ -322,7 +322,7 @@ dGenerator[{a_,b_,c1_,d_}]:={{1,cLabeled[c[{a+1,b,c1,d}],l[1]]},
 (*Then, we commutator [D,D]:*)
 
 
-commutator[dGenerator[{a1,a2,a3,a4}],dGenerator[{b1,b2,b3,b4}]]//FullSimplify
+dDcomm=commutator[dGenerator[{a1,a2,a3,a4}],dGenerator[{b1,b2,b3,b4}]]//FullSimplify
 
 
 (* ::Text:: *)
@@ -369,14 +369,14 @@ commutator[hGenerator[{a1,a2,a3,a4}],arbitraryc[{b1,b2,b3,b4,1}]]//FullSimplify/
 (* [r,D];*)
 
 
-(commutator[rGenerator[{a1,a2,a3,a4}],dGenerator[{b1,b2,b3,b4}]]//FullSimplify)/.{-a3-a4->-2+a1+a2,a3+a4->2-a1-a2}//FullSimplify
+rDcomm=(commutator[rGenerator[{a1,a2,a3,a4}],dGenerator[{b1,b2,b3,b4}]]//FullSimplify)/.{-a3-a4->-2+a1+a2,a3+a4->2-a1-a2}//FullSimplify
 
 
 (* ::Text:: *)
 (*Then, [t,D]:*)
 
 
-(commutator[tGenerator[{a1,a2,a3,a4}],dGenerator[{b1,b2,b3,b4}]]//FullSimplify)/.{-a1-a2->-2+a3+a4,a1+a2->2-a3-a4}//FullSimplify
+tDcomm=(commutator[tGenerator[{a1,a2,a3,a4}],dGenerator[{b1,b2,b3,b4}]]//FullSimplify)/.{-a1-a2->-2+a3+a4,a1+a2->2-a3-a4}//FullSimplify
 
 
 (* ::Text:: *)
@@ -454,7 +454,7 @@ c4Rules={m->-k,k->g((1+a4)/2),g->1/(2+a3+a4)};
 ((add[{tTest[{a1,a2,a3+1,a4+1}],dTest[{a1,a2,a3,a4}],hTest[{a1,a2,a3,a4}]}]//caddition//FullSimplify)//.c4Rules//Simplify)/.{0,c_}:>{0,0}//Union
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Rewriting the commutators as a linear combination of r, t, D and H*)
 
 
@@ -550,7 +550,7 @@ hTest[{a1+b1-1,a2+b2-1,a3+b3-1,a4+b4-1}]}]//caddition//FullSimplify)//.rtCommuta
 (*They are the same!*)
 
 
-(* ::Section:: *)
+(* ::Section::Closed:: *)
 (*Celestial Basis*)
 
 
@@ -571,42 +571,42 @@ dCelGenerator[{p_,mbar_,m_}]:=dGenerator[{p+mbar-1,p-mbar-1,-p+m+1,-p-m+1}]/.{x_
 (*Commutator relations*)
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*[u,u] commutator*)
 
 
 commutator[uGenerator[{p,mbar,m}],uGenerator[{q,nbar,n}]]//FullSimplify
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*[v,v] commutator*)
 
 
 commutator[vGenerator[{p,mbar,m}],vGenerator[{q,nbar,n}]]//FullSimplify
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*[d,d] commutator*)
 
 
 commutator[dCelGenerator[{p,mbar,m}],dCelGenerator[{q,nbar,n}]]//FullSimplify
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*[u,d] commutator*)
 
 
 commutator[uGenerator[{p,mbar,m}],dCelGenerator[{q,nbar,n}]]//FullSimplify
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*[v,d] commutator*)
 
 
 commutator[vGenerator[{p,mbar,m}],dCelGenerator[{q,nbar,n}]]//FullSimplify
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*[u,v] commutator*)
 
 
@@ -679,3 +679,93 @@ hCoefficient->(((a3*b4-a4*b3)(a1*b2-a2*b1))/(2(a1+a2+b1+b2)))+(-1)(((a3*b4-a4*b3
 
 
 uvCommutatorRules[{{p,mbar,m},{q,nbar,n}}]
+
+
+(* ::Section:: *)
+(*Introducing a divergence operator*)
+
+
+(* ::Text:: *)
+(*Given a C_A, we are going to define a divergence operator:*)
+
+
+div[{d_,list_}]:=Module[{pairs},
+pairs=D[#[[1]],#[[-1]]]&/@list;
+{d*pairs}]
+
+
+applyDiv[basis_]:=Total@(div/@basis)//Flatten//FullSimplify
+
+
+(* ::Text:: *)
+(*We check if r, t and D are divergence free:*)
+
+
+applyDiv[rGenerator[{a1,a2,a3,a4}]]
+
+
+applyDiv[tGenerator[{a1,a2,a3,a4}]]
+
+
+applyDiv[dGenerator[{a1,a2,a3,a4}]]
+
+
+applyDiv[dGenerator[{a1,-a1,a3,-a3}]]//FullSimplify
+
+
+(* ::Text:: *)
+(*Now, we check if the commutators are divergence free. *)
+
+
+commutatorToBasis[expr_]:={1,expr}
+
+
+(* ::Text:: *)
+(*First, for [r,r], [t,t], and [r,t] we get that the divergence vanishes:*)
+
+
+rrdiv=(Total@(div[rrcomm//commutatorToBasis]//Flatten))//FullSimplify
+
+
+ttdiv=(Total@(div[ttcomm//commutatorToBasis]//Flatten))//FullSimplify
+
+
+rtdiv=(Total@(div[rtcomm//commutatorToBasis]//Flatten))//FullSimplify
+
+
+(* ::Text:: *)
+(*For [D,D], div [D,D] =/= 0 in general*)
+
+
+dDdiv=(Total@(div[dDcomm//commutatorToBasis]//Flatten))//FullSimplify
+
+
+(* ::Text:: *)
+(*unless we constraint a2->-a1,  a4->-a3, b2->-b1, b4->-b3*)
+
+
+dDdiv/.{a2->-a1,a4->-a3,b2->-b1,b4->-b3}
+
+
+(* ::Text:: *)
+(*For [r[a_i],D[b_i]] and [t[a_i],D[b_i]] the divergence doesn't vanish by sending b2->-b1 and b4->-b3 alone*)
+
+
+rDdiv=(Total@(div[rDcomm//commutatorToBasis]//Flatten))//FullSimplify
+
+
+tDdiv=(Total@(div[tDcomm//commutatorToBasis]//Flatten))//FullSimplify
+
+
+(* ::Text:: *)
+(*We need a1->-a2 for div[r[a_i],D[b_i]] to vanish:*)
+
+
+rDdiv/.{b2->-b1,b4->-b3}//FullSimplify
+
+
+(* ::Text:: *)
+(*and we need a4->-a3 for div[t[a_i],D[b_i]] to vanish:*)
+
+
+tDdiv/.{b2->-b1,b4->-b3}//FullSimplify
